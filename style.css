@@ -1,0 +1,167 @@
+body, html {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  height: 100%;
+  margin: 0;
+  width: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+button {
+  align-items: center;
+  background: none;
+  border: 1px solid #ff6961;
+  border-radius: 5px;
+  color: #ff6961;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1em;
+  margin-left: 1em;
+  margin-right: 1em;
+  transition: all 0.1s ease-in-out;
+}
+
+button:hover {
+  background: #ff6961;
+  color: white;
+}
+
+header {
+  align-items: center;
+  display: flex;
+  gap: 0.5em;
+  padding: 0 2em;
+}
+
+input[type=range] {
+  appearance: none;
+  background: transparent;
+  height: 10em;
+  transform: rotateZ(270deg);
+  width: 10em;
+}
+
+input[type=range]:focus {
+  outline: none;
+}
+
+input[type=range]::-ms-thumb {
+  appearance: none;
+  background: white;
+  cursor: grab;
+  height: 1em;
+  width: 1em;
+}
+
+input[type=range]::-ms-thumb:active {
+  cursor: grabbing;
+}
+
+input[type=range]::-ms-thumb:hover {
+  background: #aaa;
+}
+
+input[type=range]::-ms-track {
+  background: transparent;
+  cursor: grab;
+  outline: 1px solid #ccc;
+  width: 100%;
+}
+
+input[type=range]::-ms-track:active {
+  cursor: grabbing;
+}
+
+input[type=range]::-ms-track:hover {
+  background: #ccc;
+}
+
+input[type=range]::-moz-range-thumb {
+  appearance: none;
+  background: white;
+  cursor: grab;
+  height: 1em;
+  width: 1em;
+}
+
+input[type=range]::-moz-range-thumb:active {
+  cursor: grabbing;
+}
+
+input[type=range]::-moz-range-thumb:hover {
+  background: #aaa;
+}
+
+input[type=range]::-moz-range-track {
+  cursor: grab;
+  outline: 1px solid #ccc;
+}
+
+input[type=range]::-moz-range-track:active {
+  cursor: grabbing;
+}
+
+input[type=range]::-moz-range-track:hover {
+  background: #ccc;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  cursor: grab;
+  outline: 1px solid #ccc;
+}
+
+input[type=range]::-webkit-slider-runnable-track:active {
+  cursor: grabbing;
+}
+
+input[type=range]::-webkit-slider-runnable-track:hover {
+  background: #ccc;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  appearance: none;
+  background: white;
+  cursor: grab;
+  height: 1em;
+  width: 1em;
+}
+
+input[type=range]::-webkit-slider-thumb:active {
+  cursor: grabbing;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+  background: #aaa;
+}
+
+p {
+  margin-top: 0;
+}
+
+.slider-wrap {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 5em;
+}
+
+#logo {
+  height: 2.5em;
+  width: 2.5em;
+}
+
+#mixer {
+  align-items: center;
+  background: #ff6961;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2em;
+  justify-content: center;
+  padding: 0.5em 0;
+}

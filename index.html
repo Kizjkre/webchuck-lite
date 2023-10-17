@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js" type="module"></script>
+    <!--- include the ACE editor and our webchuck stuff -->
+    <script src="https://ccrma.stanford.edu/~cc/220a/webchuck220a/js/ace.js"></script>
+    <script src="https://ccrma.stanford.edu/~cc/220a/webchuck220a/js/editor.js"></script>
+    <title>WebChucK IDE Export</title>
+  </head>
+  <body>
+    <header>
+      <img id="logo" src="https://chuck.stanford.edu/doc/images/chuck-logo2023w.png" alt="ChucK Logo">
+      <h1>WebChucK</h1>
+    </header>
+    <div id="mixer"></div>
+    <div id="editor" class="ace_editor ace-chuck"></div>
+    <button id="action">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
+        <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>
+      </svg>
+    </button>
+  </body>
+</html>

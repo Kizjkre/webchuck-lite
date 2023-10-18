@@ -2,11 +2,279 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-    <script defer src="script.js" type="module"></script>
+    <link rel="shortcut icon" href="https://chuck.stanford.edu/doc/images/chuck-logo2023w.png" type="image/png">
+    <style>
+      body, html {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        height: 100%;
+        margin: 0;
+        width: 100%;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        gap: 2em;
+      }
+
+      button {
+        align-items: center;
+        background: none;
+        border: 1px solid #ff6961;
+        border-radius: 5px;
+        color: #ff6961;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1em;
+        margin-left: 1em;
+        margin-right: 1em;
+        transition: all 0.1s ease-in-out;
+      }
+
+      button:hover {
+        background: #ff6961;
+        color: white;
+      }
+
+      header {
+        align-items: center;
+        display: flex;
+        gap: 0.5em;
+        margin-bottom: -2em;
+        padding: 0 2em;
+      }
+
+      input[type=range] {
+        appearance: none;
+        background: transparent;
+        height: 10em;
+        transform: rotateZ(270deg);
+        width: 10em;
+      }
+
+      input[type=range]:focus {
+        outline: none;
+      }
+
+      input[type=range]::-ms-thumb {
+        appearance: none;
+        background: white;
+        cursor: grab;
+        height: 1em;
+        width: 1em;
+      }
+
+      input[type=range]::-ms-thumb:active {
+        cursor: grabbing;
+      }
+
+      input[type=range]::-ms-thumb:hover {
+        background: #aaa;
+      }
+
+      input[type=range]::-ms-track {
+        background: transparent;
+        cursor: grab;
+        outline: 1px solid #ccc;
+        width: 100%;
+      }
+
+      input[type=range]::-ms-track:active {
+        cursor: grabbing;
+      }
+
+      input[type=range]::-ms-track:hover {
+        background: #ccc;
+      }
+
+      input[type=range]::-moz-range-thumb {
+        appearance: none;
+        background: white;
+        cursor: grab;
+        height: 1em;
+        width: 1em;
+      }
+
+      input[type=range]::-moz-range-thumb:active {
+        cursor: grabbing;
+      }
+
+      input[type=range]::-moz-range-thumb:hover {
+        background: #aaa;
+      }
+
+      input[type=range]::-moz-range-track {
+        cursor: grab;
+        outline: 1px solid #ccc;
+      }
+
+      input[type=range]::-moz-range-track:active {
+        cursor: grabbing;
+      }
+
+      input[type=range]::-moz-range-track:hover {
+        background: #ccc;
+      }
+
+      input[type=range]::-webkit-slider-runnable-track {
+        cursor: grab;
+        outline: 1px solid #ccc;
+      }
+
+      input[type=range]::-webkit-slider-runnable-track:active {
+        cursor: grabbing;
+      }
+
+      input[type=range]::-webkit-slider-runnable-track:hover {
+        background: #ccc;
+      }
+
+      input[type=range]::-webkit-slider-thumb {
+        appearance: none;
+        background: white;
+        cursor: grab;
+        height: 1em;
+        width: 1em;
+      }
+
+      input[type=range]::-webkit-slider-thumb:active {
+        cursor: grabbing;
+      }
+
+      input[type=range]::-webkit-slider-thumb:hover {
+        background: #aaa;
+      }
+
+      p {
+        margin-top: 0;
+      }
+
+      .slider-wrap {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 5em;
+      }
+
+      #logo {
+        height: 2.5em;
+        width: 2.5em;
+      }
+
+      #mixer {
+        align-items: center;
+        background: #ff6961;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2em;
+        justify-content: center;
+        padding: 0.5em 0;
+      }
+    </style>
     <!--- include the ACE editor and our webchuck stuff -->
     <script src="https://ccrma.stanford.edu/~cc/220a/webchuck220a/js/ace.js"></script>
     <script src="https://ccrma.stanford.edu/~cc/220a/webchuck220a/js/editor.js"></script>
+    <script type="module">
+      let l,e,t='script',p=/(from\s+|import\s+)['"](#[\w\-]+)['"]/g,x='textContent',d=document,o;for(o of d.querySelectorAll(t+'[type=chuck]'))o[x]='export default `'+o[x]+'`',o.setAttribute('type', 'inline-module');for(o of d.querySelectorAll(t+'[type=inline-module]'))l=d.createElement(t),o.id?l.id=o.id:0,l.type='module',l[x]=o[x].replace(p,(u,a,z)=>(e=d.querySelector(t+z+'[type=module][src]'))?a+`/* ${z} */'${e.src}'`:u),l.src=URL.createObjectURL(new Blob([l[x]],{type:'application/java'+t})),o.replaceWith(l)//inline
+    </script>
+    <script id="chuck" type="chuck">
+      /* WebChucK Lite Demo Code */
+      global int MY_INT;
+      global float MY_FLOAT;
+
+      SinOsc osc => ADSR e => Pan2 p => dac;
+      440 => osc.freq;
+
+      // adsr envelope
+      e.set(10::ms, 8::ms, .5, 500::ms);
+
+      while (true) {
+          // Pan the sound using global float
+          (MY_FLOAT * 2) - 2 => p.pan;
+          // Change oscillator frequency using glaob int
+          Math.random2(0, 11) => MY_INT;
+
+          <<< "WebChucK INT:", MY_INT >>>;
+          <<< "WebChucK FLOAT:", MY_FLOAT >>>;
+
+          Std.mtof(60 + MY_INT) => osc.freq;
+
+          e.keyOn();
+          100::ms => now;
+          e.keyOff();
+          400::ms => now;
+      }
+    </script>
+    <script type="inline-module">
+      import { Chuck } from 'https://cdn.jsdelivr.net/npm/webchuck/+esm';
+      import chuck from '#chuck';
+
+      const editor = newChuckEditor('editor');
+      editor.setValue(chuck, 1);
+
+      const states = Object.freeze({
+        playing: 0,
+        stopped: 1
+      });
+      let status = states.stopped;
+
+      const action = document.querySelector('#action');
+      const mixer = document.querySelector('#mixer');
+
+      action.addEventListener('click', async () => {
+        window.theChuck ??= await Chuck.init([]);
+
+        switch (status) {
+          case states.playing:
+            status = states.stopped;
+
+            theChuck.removeLastCode();
+
+            action.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
+          <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>
+        </svg>
+      `;
+            break;
+          case states.stopped:
+            status = states.playing;
+
+            theChuck.runCode(editor.getValue());
+
+            action.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-stop" viewBox="0 0 16 16">
+          <path d="M3.5 5A1.5 1.5 0 0 1 5 3.5h6A1.5 1.5 0 0 1 12.5 5v6a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 11V5zM5 4.5a.5.5 0 0 0-.5.5v6a.5.5 0 0 0 .5.5h6a.5.5 0 0 0 .5-.5V5a.5.5 0 0 0-.5-.5H5z"/>
+        </svg>
+      `;
+            break;
+        }
+      });
+
+      const sliders = [...chuck.matchAll(/^\s*(?!\/\/ +)global float (\w+)/gm)]
+        .map(([, variable]) => variable);
+
+      sliders.forEach(variable => {
+        const div = document.createElement('div');
+        div.classList.add('slider-wrap');
+
+        const p = document.createElement('p');
+        p.textContent = variable;
+
+        const input = document.createElement('input');
+        input.setAttribute('type', 'range');
+        input.setAttribute('min', '0');
+        input.setAttribute('max', '1');
+        input.setAttribute('value', '0');
+        input.setAttribute('step', '0.01');
+
+        div.append(p, input);
+        mixer.append(div);
+
+        input.addEventListener('change', e => theChuck.setFloat(variable, +e.target.value));
+      });
+    </script>
     <title>WebChucK IDE Export</title>
   </head>
   <body>

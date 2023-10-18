@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="https://chuck.stanford.edu/doc/images/chuck-logo2023w.png" type="image/png">
     <style>
+      :root {
+        --accent-color: #ff6961;
+      }
+
       body, html {
         font-family: Verdana, Geneva, Tahoma, sans-serif;
         height: 100%;
@@ -12,17 +16,17 @@
       }
 
       body {
-        display: flex;
-        flex-direction: column;
+        display: grid;
         gap: 2em;
+        grid-template-rows: minmax(0, 1fr) minmax(0, 8fr) minmax(0, 1fr);
       }
 
       button {
         align-items: center;
         background: none;
-        border: 1px solid #ff6961;
+        border: 1px solid var(--accent-color);
         border-radius: 5px;
-        color: #ff6961;
+        color: var(--accent-color);
         cursor: pointer;
         display: flex;
         justify-content: center;
@@ -33,7 +37,7 @@
       }
 
       button:hover {
-        background: #ff6961;
+        background: var(--accent-color);
         color: white;
       }
 
@@ -41,7 +45,6 @@
         align-items: center;
         display: flex;
         gap: 0.5em;
-        margin-bottom: -2em;
         padding: 0 2em;
       }
 
@@ -146,6 +149,11 @@
         background: #aaa;
       }
 
+      main {
+        display: flex;
+        overflow: hidden;
+      }
+
       p {
         margin-top: 0;
       }
@@ -158,6 +166,15 @@
         width: 5em;
       }
 
+      #editor {
+        height: 100%;
+        width: 100%;
+      }
+
+      #editor-wrap {
+        flex-grow: 1;
+      }
+
       #logo {
         height: 2.5em;
         width: 2.5em;
@@ -165,19 +182,24 @@
 
       #mixer {
         align-items: center;
-        background: #ff6961;
+        background: var(--accent-color);
         display: flex;
+        flex-basis: 20%;
         flex-wrap: wrap;
-        gap: 2em;
+        gap: 1em;
         justify-content: center;
-        padding: 0.5em 0;
+        overflow: scroll;
+        padding: 0.5em;
       }
     </style>
     <!--- include the ACE editor and our webchuck stuff -->
-    <script src="https://ccrma.stanford.edu/~cc/220a/webchuck220a/js/ace.js"></script>
-    <script src="https://ccrma.stanford.edu/~cc/220a/webchuck220a/js/editor.js"></script>
+    <script src="https://chuck.stanford.edu/ide/js/ace-min-noconflict/ace.js"></script>
+    <script src="https://chuck.stanford.edu/ide/js/ace-min-noconflict/theme-chuck.js"></script>
+    <script src="https://chuck.stanford.edu/ide/js/ace-min-noconflict/mode-chuck.js"></script>
     <script type="module">
-      let l,e,t='script',p=/(from\s+|import\s+)['"](#[\w\-]+)['"]/g,x='textContent',d=document,o;for(o of d.querySelectorAll(t+'[type=chuck]'))o[x]='export default `'+o[x]+'`',o.setAttribute('type', 'inline-module');for(o of d.querySelectorAll(t+'[type=inline-module]'))l=d.createElement(t),o.id?l.id=o.id:0,l.type='module',l[x]=o[x].replace(p,(u,a,z)=>(e=d.querySelector(t+z+'[type=module][src]'))?a+`/* ${z} */'${e.src}'`:u),l.src=URL.createObjectURL(new Blob([l[x]],{type:'application/java'+t})),o.replaceWith(l)//inline
+      let l, e, t = 'script', p = /(from\s+|import\s+)['"](#[\w\-]+)['"]/g, x = 'textContent', d = document, o;
+      for (o of d.querySelectorAll(t + '[type=chuck]')) o[x] = 'export default `' + o[x] + '`', o.setAttribute('type', 'inline-module');
+      for (o of d.querySelectorAll(t + '[type=inline-module]')) l = d.createElement(t), o.id ? l.id = o.id : 0, l.type = 'module', l[x] = o[x].replace(p, (u, a, z) => (e = d.querySelector(t + z + '[type=module][src]')) ? a + `/* ${ z } */'${ e.src }'` : u), l.src = URL.createObjectURL(new Blob([l[x]], { type: 'application/java' + t })), o.replaceWith(l);//inline
     </script>
     <script id="chuck" type="chuck">
       /* WebChucK Lite Demo Code */
@@ -211,7 +233,21 @@
       import { Chuck } from 'https://cdn.jsdelivr.net/npm/webchuck/+esm';
       import chuck from '#chuck';
 
-      const editor = newChuckEditor('editor');
+      const editor = ace.edit('editor');
+      editor.setTheme('ace/theme/chuck');
+      editor.session.setMode('ace/mode/chuck');
+      editor.setOptions({
+        fontSize: '14px',
+        fontFamily: 'Monaco, Menlo, Consolas, \'Courier New\', monospace',
+        cursorStyle: 'ace',
+        useSoftTabs: true,
+        showFoldWidgets: true,
+        foldStyle: 'markbeginend'
+      });
+      editor.container.style.lineHeight = 1.25;
+      editor.renderer.updateFontSize();
+      editor.session.setUseWrapMode(true);
+
       editor.setValue(chuck, 1);
 
       const states = Object.freeze({
@@ -233,10 +269,10 @@
             theChuck.removeLastCode();
 
             action.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
-          <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>
-        </svg>
-      `;
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
+                <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>
+              </svg>
+            `;
             break;
           case states.stopped:
             status = states.playing;
@@ -244,10 +280,10 @@
             theChuck.runCode(editor.getValue());
 
             action.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-stop" viewBox="0 0 16 16">
-          <path d="M3.5 5A1.5 1.5 0 0 1 5 3.5h6A1.5 1.5 0 0 1 12.5 5v6a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 11V5zM5 4.5a.5.5 0 0 0-.5.5v6a.5.5 0 0 0 .5.5h6a.5.5 0 0 0 .5-.5V5a.5.5 0 0 0-.5-.5H5z"/>
-        </svg>
-      `;
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-stop" viewBox="0 0 16 16">
+                <path d="M3.5 5A1.5 1.5 0 0 1 5 3.5h6A1.5 1.5 0 0 1 12.5 5v6a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 11V5zM5 4.5a.5.5 0 0 0-.5.5v6a.5.5 0 0 0 .5.5h6a.5.5 0 0 0 .5-.5V5a.5.5 0 0 0-.5-.5H5z"/>
+              </svg>
+            `;
             break;
         }
       });
@@ -272,7 +308,7 @@
         div.append(p, input);
         mixer.append(div);
 
-        input.addEventListener('change', e => theChuck.setFloat(variable, +e.target.value));
+        input.addEventListener('input', e => theChuck?.setFloat(variable, +e.target.value));
       });
     </script>
     <title>WebChucK IDE Export</title>
@@ -282,11 +318,17 @@
       <img id="logo" src="https://chuck.stanford.edu/doc/images/chuck-logo2023w.png" alt="ChucK Logo">
       <h1>WebChucK</h1>
     </header>
-    <div id="mixer"></div>
-    <div id="editor" class="ace_editor ace-chuck"></div>
+    <main>
+      <div id="editor-wrap">
+        <div id="editor" class="ace_editor ace-chuck"></div>
+      </div>
+      <div id="mixer"></div>
+    </main>
     <button id="action">
-      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
-        <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-play"
+           viewBox="0 0 16 16">
+        <path
+          d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z" />
       </svg>
     </button>
   </body>

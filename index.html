@@ -2,10 +2,25 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="https://chuck.stanford.edu/doc/images/chuck-logo2023w.png" type="image/png">
     <style>
       :root {
         --accent-color: bisque;
+      }
+
+      @media screen and (max-device-width: 768px) {
+        body, html {
+          font-size: 6pt;
+        }
+
+        main {
+          flex-direction: column-reverse;
+        }
+
+        #mixer {
+          flex-basis: 60% !important;
+        }
       }
 
       body, html {
@@ -189,7 +204,8 @@
         flex-wrap: wrap;
         gap: 1em;
         justify-content: center;
-        overflow: scroll;
+        overflow-x: hidden;
+        overflow-y: scroll;
         padding: 0.5em;
       }
     </style>
@@ -205,6 +221,17 @@
     <script id="chuck" type="chuck">
       /* WebChucK Lite Demo Code */
       global int MY_INT;
+      global float MY_FLOAT;
+      global float MY_FLOAT;
+      global float MY_FLOAT;
+      global float MY_FLOAT;
+      global float MY_FLOAT;
+      global float MY_FLOAT;
+      global float MY_FLOAT;
+      global float MY_FLOAT;
+      global float MY_FLOAT;
+      global float MY_FLOAT;
+      global float MY_FLOAT;
       global float MY_FLOAT;
 
       SinOsc osc => ADSR e => Pan2 p => dac;

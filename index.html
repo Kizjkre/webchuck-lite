@@ -40,9 +40,9 @@
       button {
         align-items: center;
         background: none;
-        border: 1px solid var(--accent-color);
+        border: 1px solid black;
         border-radius: 5px;
-        color: var(--accent-color);
+        color: black;
         cursor: pointer;
         display: flex;
         justify-content: center;
@@ -54,7 +54,7 @@
 
       button:hover {
         background: var(--accent-color);
-        color: white;
+        color: black;
       }
 
       header {
@@ -221,17 +221,6 @@
     <script id="chuck" type="chuck">
       /* WebChucK Lite Demo Code */
       global int MY_INT;
-      global float MY_FLOAT;
-      global float MY_FLOAT;
-      global float MY_FLOAT;
-      global float MY_FLOAT;
-      global float MY_FLOAT;
-      global float MY_FLOAT;
-      global float MY_FLOAT;
-      global float MY_FLOAT;
-      global float MY_FLOAT;
-      global float MY_FLOAT;
-      global float MY_FLOAT;
       global float MY_FLOAT;
 
       SinOsc osc => ADSR e => Pan2 p => dac;
